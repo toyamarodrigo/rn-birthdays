@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import moment from 'moment';
 import { ActionBar } from '../ActionBar';
 import { AddBirthday } from '../AddBirthday';
+import { Birthday } from '../Birthday';
 import firebase from '../../utils/firebase';
 import 'firebase/firestore';
 
@@ -58,18 +59,22 @@ export const ListBirthday = ({ user }) => {
 
       console.log('birthdays', birthdays);
       console.log('passedBirthdays', passedBirthdays);
-
-      setBirthdays(birthdayTempArray);
-      setPassedBirthdays(passedBirthdayTempArray);
     });
+    setBirthdays(birthdayTempArray);
+    setPassedBirthdays(passedBirthdayTempArray);
   };
 
   return (
     <View style={styles.viewContainer}>
       {showList ? (
-        <>
-          <Text>LIST</Text>
-        </>
+        <ScrollView style={styles.scrollView}>
+          {birthdays.map((birthday, index) => (
+            <Birthday key={index} birthday={birthday} />
+          ))}
+          {passedBirthdays.map((passedBirthday, index) => (
+            <Birthday key={index} birthday={passedBirthday} />
+          ))}
+        </ScrollView>
       ) : (
         <AddBirthday user={user} setShowList={setShowList} />
       )}
@@ -82,5 +87,9 @@ const styles = StyleSheet.create({
   viewContainer: {
     alignItems: 'center',
     height: '100%',
+  },
+  scrollView: {
+    marginBottom: 50,
+    width: '100%',
   },
 });
