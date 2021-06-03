@@ -13,6 +13,7 @@ export const ListBirthday = ({ user }) => {
   const [showList, setShowList] = useState(false);
   const [birthdays, setBirthdays] = useState([]);
   const [passedBirthdays, setPassedBirthdays] = useState([]);
+  const [reloadData, setReloadData] = useState(false);
 
   useEffect(() => {
     setBirthdays([]);
@@ -29,7 +30,8 @@ export const ListBirthday = ({ user }) => {
         });
         formatData(items);
       });
-  }, []);
+    setReloadData(false);
+  }, [reloadData]);
 
   const formatData = (items) => {
     const currentDate = moment().set({
@@ -56,9 +58,6 @@ export const ListBirthday = ({ user }) => {
       } else {
         passedBirthdayTempArray.push(itemTemp);
       }
-
-      console.log('birthdays', birthdays);
-      console.log('passedBirthdays', passedBirthdays);
     });
     setBirthdays(birthdayTempArray);
     setPassedBirthdays(passedBirthdayTempArray);
@@ -76,7 +75,7 @@ export const ListBirthday = ({ user }) => {
           ))}
         </ScrollView>
       ) : (
-        <AddBirthday user={user} setShowList={setShowList} />
+        <AddBirthday user={user} setShowList={setShowList} setReloadData={setReloadData} />
       )}
       <ActionBar showList={showList} setShowList={setShowList} />
     </View>
