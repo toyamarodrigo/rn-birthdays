@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, StatusBar, Button } from 'react-native';
-import { Auth } from './src/components';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Button,
+} from 'react-native';
+import { Auth, ListBirthday } from './src/components';
 import firebase from './src/utils/firebase';
 import 'firebase/auth';
 
@@ -18,7 +25,7 @@ export default function App() {
     <>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.background}>
-        {user ? <Logout /> : <Auth />}
+        {user ? <ListBirthday /> : <Auth />}
       </SafeAreaView>
     </>
   );

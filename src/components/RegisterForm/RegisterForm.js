@@ -43,15 +43,17 @@ export const RegisterForm = ({ changeForm }) => {
     setFormError(errors);
   };
 
+  const handleOnChangeRegister = (e, type) => {
+    setFormData({ ...formData, [type]: e.nativeEvent.text });
+  };
+
   return (
     <>
       <TextInput
         style={[styles.input, formError.email && styles.error]}
         placeholder="Email"
         placeholderTextColor="#969696"
-        onChange={(e) =>
-          setFormData({ ...formData, email: e.nativeEvent.text })
-        }
+        onChange={(e) => handleOnChangeRegister(e, 'email')}
       />
       <TextInput
         style={[styles.input, formError.password && styles.error]}
@@ -59,7 +61,7 @@ export const RegisterForm = ({ changeForm }) => {
         placeholderTextColor="#969696"
         secureTextEntry={true}
         onChange={(e) =>
-          setFormData({ ...formData, password: e.nativeEvent.text })
+          setFormData((e) => handleOnChangeRegister(e, 'password'))
         }
       />
       <TextInput
@@ -68,7 +70,7 @@ export const RegisterForm = ({ changeForm }) => {
         placeholderTextColor="#969696"
         secureTextEntry={true}
         onChange={(e) =>
-          setFormData({ ...formData, repeatPassword: e.nativeEvent.text })
+          setFormData((e) => handleOnChangeRegister(e, 'repeatPassword'))
         }
       />
       <TouchableOpacity>
