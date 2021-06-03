@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Alert } from 'react-native';
 import moment from 'moment';
 import { ActionBar } from '../ActionBar';
 import { AddBirthday } from '../AddBirthday';
@@ -63,19 +63,59 @@ export const ListBirthday = ({ user }) => {
     setPassedBirthdays(passedBirthdayTempArray);
   };
 
+  const deleteBirthday = (birthday) => {
+    Alert.alert(
+      'Remove birthday',
+      `Are you sure you want to remove ${birthday.firstName} ${birthday.lastName}`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove',
+          onPress: () => {
+            db.collection(user.uid)
+              .doc(birthday.id)
+              .delete()
+              .then(() => {
+                setReloadData();
+              })
+              .catch((err) => {
+                console.log('Error', err);
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.viewContainer}>
       {showList ? (
         <ScrollView style={styles.scrollView}>
           {birthdays.map((birthday, index) => (
-            <Birthday key={index} birthday={birthday} />
+            <Birthday
+              key={index}
+              birthday={birthday}
+              deleteBirthday={deleteBirthday}
+            />
           ))}
           {passedBirthdays.map((passedBirthday, index) => (
-            <Birthday key={index} birthday={passedBirthday} />
+            <Birthday
+              key={index}
+              birthday={passedBirthday}
+              deleteBirthday={deleteBirthday}
+            />
           ))}
         </ScrollView>
       ) : (
-        <AddBirthday user={user} setShowList={setShowList} setReloadData={setReloadData} />
+        <AddBirthday
+          user={user}
+          setShowList={setShowList}
+          setReloadData={setReloadData}
+        />
       )}
       <ActionBar showList={showList} setShowList={setShowList} />
     </View>
